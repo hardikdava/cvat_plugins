@@ -97,7 +97,7 @@ spec:
   build:
 
     image: cvat/ultralytics-yolov8
-    baseImage: ultralytics/ultralytics:cpu
+    baseImage: ultralytics/ultralytics:latest-cpu
 
     directives:
       preCopy:
