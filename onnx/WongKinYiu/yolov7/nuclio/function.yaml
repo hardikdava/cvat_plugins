@@ -1,0 +1,50 @@
+metadata:
+  name: onnx-wongkinyiu-yolov7
+  namespace: cvat
+  annotations:
+    name: YOLO v7
+    type: detector
+    framework: onnx
+    spec: |
+      [
+        { "id": 0, "name": "0" },
+        { "id": 1, "name": "1" }
+      ]
+spec:
+  description: YOLO v7 via onnx
+  runtime: 'python:3.8'
+  handler: main:handler
+  eventTimeout: 30s
+  build:
+    image: cvat.onnx.wongkinyiu.yolov7
+    baseImage: ultralytics/yolov5:latest-cpu
+
+    directives:
+      preCopy:
+        - kind: USER
+          value: root
+        - kind: RUN
+          value: apt update && apt install --no-install-recommends -y libglib2.0-0 && apt install wget
+        - kind: RUN
+          value: pip install onnxruntime
+        - kind: WORKDIR
+          value: /opt/nuclio
+        - kind: RUN
+          value: wget https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7-nms-640.onnx
+        - kind: RUN
+          value: ln -s /usr/bin/python3 /usr/bin/python
+
+  triggers:
+    myHttpTrigger:
+      maxWorkers: 2
+      kind: 'http'
+      workerAvailabilityTimeoutMilliseconds: 10000
+      attributes:
+        maxRequestBodySize: 33554432 # 32MB
+
+  platform:
+    attributes:
+      restartPolicy:
+        name: always
+        maximumRetryCount: 3
+      mountMode: volume
