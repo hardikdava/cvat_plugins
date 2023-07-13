@@ -31,26 +31,28 @@ def handler(context, event):
     yolo_results = context.user_data.model(image, conf=threshold)[0]
     labels = yolo_results.names
     detections = sv.Detections.from_yolov8(yolo_results)
+
+    detections = detections[detections.confidence > threshold]
     boxes = detections.xyxy
     conf = detections.confidence
     class_ids = detections.class_id
 
     results = []
+    
     if boxes.shape[0] > 0:
 
         for label, score, box in zip(class_ids, conf, boxes):
-            if score >= threshold:
-                xtl = int(box[0])
-                ytl = int(box[1])
-                xbr = int(box[2])
-                ybr = int(box[3])
+          
+            xtl = int(box[0])
+            ytl = int(box[1])
+            xbr = int(box[2])
+            ybr = int(box[3])
 
-                results.append({
+            results.append({
                     "confidence": str(score),
                     "label": labels.get(label, "unknown"),
                     "points": [xtl, ytl, xbr, ybr],
-                    "type": "rectangle",
-                })
+                    "type": "rectangle",})
 
     return context.Response(body=json.dumps(results), headers={},
                             content_type='application/json', status_code=200)
