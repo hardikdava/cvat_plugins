@@ -258,3 +258,7 @@ results.append({
           "type": "point",
       })
 --->
+
+**Allowed label method:**
+
+"rectangle","polygon","polyline","points","ellipse","cuboid","skeleton","mask"
