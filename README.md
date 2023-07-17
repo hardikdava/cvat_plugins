@@ -1,4 +1,4 @@
-# cvat_plugins
+# cvat-serverless
 This reposity contains some serverless functionality for semi-auto annotations.
 
 
