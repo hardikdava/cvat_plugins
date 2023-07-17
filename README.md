@@ -101,4 +101,19 @@ docker container rm {docker-name}
 |points  |list|[x1, y1, x2, y2]|
 |label  |string|labels.get(class_id, "unknown")|
 
+keypoints = ['nose', 'left_eye_inner', 'left_eye', 'left_eye_outer', 'right_eye_inner', 
+             'right_eye', 'right_eye_outer', 'left_ear', 'right_ear', 'mouth_left', 
+             'mouth_right', 'left_shoulder', 'right_shoulder ', 'left_elbow', 'right_elbow', 
+             'left_wrist', 'right_wrist', 'left_pinky', 'right_pinky', 'left_index', 'right_index', 
+             'left_thumb', 'right_thumb ', 'left_hip', 'right_hip', 'left_knee', 'right_knee', 
+             'left_ankle', 'right_ankle ', 'left_heel', 'right_heel', 'left_foot_index', 'right_foot_index']
+
+src="https://github.com/opencv/cvat/projects/16#:~:text=keypoints%20%3D%20%5B%27nose%27%2C%20%27left_eye_inner,landmark%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22type%22%3A%20%22point%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D)"
+results = []
+results.append({
+          
+          "label": keypoints,
+          "points": [[x.x, x.y, x.z, x.visibility] for x in results.pose_landmarks.landmark],
+          "type": "point",
+      })
 --->
